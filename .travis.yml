@@ -1,0 +1,11 @@
+language: java
+jdk:
+  - openjdk14
+
+
+notifications:
+  email:
+    recipients:
+      - mosquitod3@yandex.ru
+    on_success: never # default: change
+    on_failure: always # default: always
