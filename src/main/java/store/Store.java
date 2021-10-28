@@ -7,7 +7,7 @@ import java.util.List;
 public interface Store {
     void save(Item item);
 
-    void update(Integer id, Item item);
+    void update(Integer id);
 
     void delete(Integer id);
 

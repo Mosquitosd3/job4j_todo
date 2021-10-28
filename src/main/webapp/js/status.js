@@ -2,7 +2,7 @@ function changeStatus(data) {
     let description = $('#userId' + data.value).val();
     let question = "Вы уверены что задание выполнено? \n" + description;
     let result = confirm(question);
-    let arr = {id: data.value, description: description, done: true};
+    let arr = {id: data.value, description: description};
     if (result) {
         $.ajax({
             cache: false,

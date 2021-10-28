@@ -11,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class HBRStore implements Store {
@@ -40,7 +39,7 @@ public class HBRStore implements Store {
         if (item.getId() == 0) {
             create(item);
         } else {
-            update(item.getId(), item);
+            update(item.getId());
         }
     }
 
@@ -60,17 +59,12 @@ public class HBRStore implements Store {
     }
 
     @Override
-    public void update(Integer id, Item item) {
+    public void update(Integer id) {
         final Session session = sf.openSession();
         session.beginTransaction();
         try {
-            session.createQuery("update Item set"
-                            + " description = :description, created = :created, done = :done"
-                            + " where id = :id")
-                    .setParameter("description", item.getDescription())
-                    .setParameter("created", item.getCreated())
-                    .setParameter("done", item.isDone())
-                    .setParameter("id", item.getId())
+            session.createQuery("update Item set done = :done where id = " + id)
+                    .setParameter("done", true)
                     .executeUpdate();
             session.getTransaction().commit();
         } catch (Exception e) {
@@ -100,7 +94,7 @@ public class HBRStore implements Store {
 
     @Override
     public List<Item> findAll() {
-        List result = null;
+        List result = new ArrayList(0);
         final Session session = sf.openSession();
         session.beginTransaction();
         try {
