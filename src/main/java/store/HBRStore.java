@@ -1,17 +1,17 @@
 package store;
 
 import model.Item;
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 public class HBRStore implements Store {
 
@@ -44,85 +44,50 @@ public class HBRStore implements Store {
     }
 
     private Item create(Item item) {
-        final Session session = sf.openSession();
-        session.beginTransaction();
-        try {
-            session.save(item);
-            session.getTransaction().commit();
-        } catch (Exception e) {
-            session.getTransaction().rollback();
-            LOG.error("Error where create", e);
-        } finally {
-            session.close();
-        }
+        this.tx(session -> session.save(item));
         return item;
     }
 
     @Override
     public void update(Integer id) {
-        final Session session = sf.openSession();
-        session.beginTransaction();
-        try {
-            session.createQuery("update Item set done = :done where id = " + id)
-                    .setParameter("done", true)
-                    .executeUpdate();
-            session.getTransaction().commit();
-        } catch (Exception e) {
-            session.getTransaction().rollback();
-            LOG.error("Error where update", e);
-        } finally {
-            session.close();
-        }
+        this.tx(session -> session.createQuery(
+                "update Item set done = :done where id = " + id)
+                .setParameter("done", true).executeUpdate()
+        );
     }
 
     @Override
     public void delete(Integer id) {
-        final Session session = sf.openSession();
-        session.beginTransaction();
-        try {
-            Item item = new Item(null);
-            item.setId(id);
-            session.delete(item);
-            session.getTransaction().commit();
-        } catch (HibernateException e) {
-            session.getTransaction().rollback();
-            LOG.error("Error where delete", e);
-        } finally {
-            session.close();
-        }
+        this.tx(session -> {
+           Item item = session.load(Item.class, id);
+           session.delete(item);
+           return item;
+        });
     }
 
     @Override
     public List<Item> findAll() {
-        List result = new ArrayList(0);
-        final Session session = sf.openSession();
-        session.beginTransaction();
-        try {
-            result = session.createQuery("from model.Item").list();
-            session.getTransaction().commit();
-        } catch (HibernateException e) {
-            session.getTransaction().rollback();
-            LOG.error("Error where find all", e);
-        } finally {
-            session.close();
-        }
-        return result;
+        return this.tx(session -> session.createQuery("from model.Item").list());
     }
 
     @Override
     public Item findByID(Integer id) {
-        Item result = null;
+        return this.tx(session -> session.get(Item.class, id));
+    }
+
+    private <T> T tx(final Function<Session, T> command) {
         final Session session = sf.openSession();
-        session.beginTransaction();
+        final Transaction tx = session.beginTransaction();
         try {
-            result = session.get(Item.class, id);
-            session.getTransaction().commit();
-        } catch (HibernateException e) {
+            T rsl = command.apply(session);
+            tx.commit();
+            return rsl;
+        } catch (final Exception e) {
             session.getTransaction().rollback();
-            LOG.error("Error where find by id", e);
+            LOG.error(e.getMessage(), e);
+            throw e;
         } finally {
             session.close();
         }
-        return result;
     }
 }
