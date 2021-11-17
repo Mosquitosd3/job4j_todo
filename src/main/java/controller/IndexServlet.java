@@ -3,6 +3,7 @@ package controller;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import model.Item;
+import model.Users;
 import store.HBRStore;
 
 import javax.servlet.ServletException;
@@ -34,6 +35,8 @@ public class IndexServlet extends HttpServlet {
             throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
         Item item = GSON.fromJson(req.getReader(), Item.class);
+        Users user = (Users) req.getSession().getAttribute("user");
+        item.setUser(user);
         HBRStore.instOf().save(item);
     }
 }

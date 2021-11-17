@@ -7,7 +7,7 @@ function changeStatus(data) {
         $.ajax({
             cache: false,
             type: 'POST',
-            url: '/todo/index',
+            url: '/todo/index.do',
             data: JSON.stringify(arr),
             contentType: 'application/json'
         }).done(function() {

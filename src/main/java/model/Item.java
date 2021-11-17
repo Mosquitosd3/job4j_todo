@@ -17,6 +17,10 @@ public class Item {
 
     private Timestamp created = new Timestamp(System.currentTimeMillis());
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private Users user;
+
     public Item() {
     }
 
@@ -61,6 +65,14 @@ public class Item {
         this.done = done;
     }
 
+    public Users getUser() {
+        return user;
+    }
+
+    public void setUser(Users user) {
+        this.user = user;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -85,10 +97,11 @@ public class Item {
                 + id
                 + ", description='"
                 + description + '\''
+                + ", done=" + done
                 + ", created="
                 + created
-                + ", done="
-                + done
+                + ", user="
+                + user
                 + '}';
     }
 }

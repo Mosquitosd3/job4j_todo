@@ -1,11 +1,14 @@
 package store;
 
 import model.Item;
+import model.Users;
 
 import java.util.List;
 
 public interface Store {
-    void save(Item item);
+    Item save(Item item);
+
+    Users save(Users users);
 
     void update(Integer id);
 
@@ -14,4 +17,6 @@ public interface Store {
     List<Item> findAll();
 
     Item findByID(Integer id);
+
+    Users findByEmail(String email);
 }

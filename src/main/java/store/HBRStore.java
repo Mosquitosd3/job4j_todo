@@ -1,6 +1,7 @@
 package store;
 
 import model.Item;
+import model.Users;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -35,17 +36,28 @@ public class HBRStore implements Store {
     }
 
     @Override
-    public void save(Item item) {
+    public Item save(Item item) {
         if (item.getId() == 0) {
             create(item);
         } else {
             update(item.getId());
         }
+        return item;
+    }
+
+    @Override
+    public Users save(Users user) {
+        return create(user);
     }
 
     private Item create(Item item) {
         this.tx(session -> session.save(item));
         return item;
+    }
+
+    private Users create(Users user) {
+        this.tx(session -> session.save(user));
+        return user;
     }
 
     @Override
@@ -73,6 +85,14 @@ public class HBRStore implements Store {
     @Override
     public Item findByID(Integer id) {
         return this.tx(session -> session.get(Item.class, id));
+    }
+
+    @Override
+    public Users findByEmail(String email) {
+        return (Users) this.tx(session -> session.createQuery("from Users where email = :email")
+                .setParameter("email", email)
+                .uniqueResult()
+        );
     }
 
     private <T> T tx(final Function<Session, T> command) {

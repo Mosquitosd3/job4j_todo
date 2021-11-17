@@ -3,7 +3,7 @@ function showAll() {
     $.ajax({
         cache: false,
         type: 'GET',
-        url: '/todo/index',
+        url: '/todo/index.do',
         dataType: 'json'
     }).done(function (data) {
         let result = "<tbody id=\"bodyTableId\">";
@@ -17,6 +17,7 @@ function showAll() {
             result += "<input type=\"hidden\" value=\"" + item.description + "\" id=\"userId"+ item.id + "\"/>";
             result += "<th>" + row + "</th>";
             result += "<th>" + item.description + "</th>";
+            result += "<th>" + item.user.name + "</th>";
             let date = new Date(item.created);
             const dtFormat = new Intl.DateTimeFormat('ru', {
                 hour: "numeric",
