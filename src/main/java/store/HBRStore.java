@@ -1,5 +1,6 @@
 package store;
 
+import model.Category;
 import model.Item;
 import model.Users;
 import org.hibernate.Session;
@@ -11,6 +12,7 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.management.Query;
 import java.util.List;
 import java.util.function.Function;
 
@@ -79,7 +81,14 @@ public class HBRStore implements Store {
 
     @Override
     public List<Item> findAll() {
-        return this.tx(session -> session.createQuery("from model.Item").list());
+        return this.tx(session -> session.createQuery(
+                "select distinct i from Item i join fetch i.categories").list()
+        );
+    }
+
+    @Override
+    public List<Category> findAllCategory() {
+        return this.tx(session -> session.createQuery("from model.Category").list());
     }
 
     @Override
@@ -110,4 +119,5 @@ public class HBRStore implements Store {
             session.close();
         }
     }
+
 }

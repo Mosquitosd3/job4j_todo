@@ -20,6 +20,7 @@
     <script src="js/validate.js"></script>
     <script src="js/status.js"></script>
     <script src="js/showAll.js"></script>
+    <script src="js/showCategory.js"></script>
 
     <title>ToDo</title>
 </head>
@@ -28,19 +29,26 @@
     <img src="images/logo.jpg" height="200" width="450" align="middle" class="center-img">
 </div>
 <br>
-<form>
-    <div class="form-group">
-        <div class="container">
-            <textarea class="form-control" id="formForDefinition1" rows="2"></textarea>
-            <small class="form-text text-muted">Введите новую задачу</small>
+<div class="container">
+    <form>
+        <div class="form-group">
+         <div class="container">
+             <textarea class="form-control" id="formForDefinition1" rows="2"></textarea>
+                <small class="form-text text-muted">Введите новую задачу</small>
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        <div class="container">
-            <button type="reset" class="btn btn-primary" onclick="addNewItem()">Добавить</button>
+        <div class="container-fluid" style="margin: 20px auto;">
+            <label for="categorySelection">Категории</label>
+            <select class="form-control" id="categorySelection" name="category" multiple>
+             <option selected disabled value="">Выберите категорию</option>
+            </select>
         </div>
-    </div>
-</form>
+        <div class="form-group">
+            <input type="hidden" id="hiddenCategoryName">
+        </div>
+        <button type="submit" class="btn btn-primary" onclick="addNewItem()">Добавить задачу</button>
+    </form>
+</div>
 <div class="container">
     <nav class="navbar navbar-dark bg-primary">
         <div class="container">
@@ -57,6 +65,7 @@
         <tr>
             <th scope="col">№</th>
             <th scope="col">Задача</th>
+            <th scope="col">Категория</th>
             <th scope="col">Автор</th>
             <th scope="col">Дата добавления</th>
             <th scope="col">Статус</th>

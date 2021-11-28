@@ -17,6 +17,12 @@ function showAll() {
             result += "<input type=\"hidden\" value=\"" + item.description + "\" id=\"userId"+ item.id + "\"/>";
             result += "<th>" + row + "</th>";
             result += "<th>" + item.description + "</th>";
+            result += "<th>";
+            let categories = item.categories;
+            for (let j = 0; j < categories.length; j++) {
+                result += item.categories[j].name + "<br>";
+            }
+            result += "</th>";
             result += "<th>" + item.user.name + "</th>";
             let date = new Date(item.created);
             const dtFormat = new Intl.DateTimeFormat('ru', {

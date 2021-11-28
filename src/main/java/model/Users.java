@@ -14,6 +14,10 @@ public class Users {
     private String email;
     private String password;
 
+    public Users() {
+
+    }
+
     public Users(String name, String email, String password) {
         this.name = name;
         this.email = email;

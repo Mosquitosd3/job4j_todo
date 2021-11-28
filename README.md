@@ -2,5 +2,4 @@
 # "TODO list".
 ![Alt-текст](https://i.ibb.co/9ndY5Md/image.png)
 ![Alt-текст](https://i.ibb.co/L8dK1T3/image.png)
-![Alt-текст](https://i.ibb.co/h2R64GB/image.png)
-![Alt-текст](https://i.ibb.co/bzcSRVV/image.png)
+![Alt-текст](https://i.ibb.co/GnkdsJF/image.png)

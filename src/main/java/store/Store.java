@@ -1,5 +1,6 @@
 package store;
 
+import model.Category;
 import model.Item;
 import model.Users;
 
@@ -15,6 +16,8 @@ public interface Store {
     void delete(Integer id);
 
     List<Item> findAll();
+
+    List<Category> findAllCategory();
 
     Item findByID(Integer id);
 
