@@ -3,6 +3,7 @@ package model;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -16,8 +17,8 @@ public class Item {
     private String description;
 
     private boolean done;
-
-    private Timestamp created = new Timestamp(System.currentTimeMillis());
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date created = new Date(System.currentTimeMillis());
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -58,7 +59,7 @@ public class Item {
         this.description = description;
     }
 
-    public Timestamp getCreated() {
+    public Date getCreated() {
         return created;
     }
 
